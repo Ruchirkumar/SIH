@@ -1,14 +1,30 @@
-﻿.venv/
+﻿# Virtual environment
+.venv/
 venv/
 env/
+
+# Django
 *.pyc
 __pycache__/
 db.sqlite3
 media/
 staticfiles/
+
+# Environment variables / secrets
 .env
+
+# IDE
 .vscode/
 .idea/
 .claude/
+
+# OS
 .DS_Store
 Thumbs.db
+
+# OCR test images (personal test data, not project assets)
+ocr_test/*.jpg
+ocr_test/*.jpeg
+ocr_test/*.png
+ocr_test/*.webp
+ocr_output.txt
