@@ -1,0 +1,67 @@
+{% extends 'products/base.html' %}
+{% block title %}Scan Result{% endblock %}
+{% block content %}
+
+<h2 class="mb-4">Scan Result - {{ scan.product.name }}</h2>
+
+<div class="row">
+    <div class="col-md-5">
+        <img src="{{ scan.image.url }}" class="img-fluid rounded border" alt="Scanned label">
+    </div>
+
+    <div class="col-md-7">
+        {% if scan.compliance_status == 'COMPLIANT' %}
+            <div class="alert alert-success">
+                <strong>COMPLIANT</strong> - All checked declarations are present.
+            </div>
+        {% elif scan.compliance_status == 'NON_COMPLIANT' %}
+            <div class="alert alert-danger">
+                <strong>NON-COMPLIANT</strong> - {{ scan.violations|length }} issue(s) found.
+            </div>
+        {% else %}
+            <div class="alert alert-secondary">
+                <strong>PENDING</strong> - Processing not yet complete.
+            </div>
+        {% endif %}
+
+        {% if scan.violations %}
+            <h5>Violations</h5>
+            <ul class="list-group mb-4">
+                {% for v in scan.violations %}
+                    <li class="list-group-item list-group-item-danger">{{ v }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <h5>Extracted Fields</h5>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>MRP</th>
+                    <td>{{ scan.extracted_fields.mrp.value|default:"Not found" }}</td>
+                </tr>
+                <tr>
+                    <th>License No.</th>
+                    <td>{{ scan.extracted_fields.license_no.value|default:"Not found" }}</td>
+                </tr>
+                <tr>
+                    <th>Manufacturer</th>
+                    <td>{{ scan.extracted_fields.manufacturer|default:"Not found" }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        {% if scan.extracted_fields.dates %}
+            <h6>Dates Found</h6>
+            <ul>
+                {% for d in scan.extracted_fields.dates %}
+                    <li>{{ d.label }}: {{ d.value }} (confidence {{ d.confidence|floatformat:2 }})</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <a href="{% url 'upload_scan' %}" class="btn btn-outline-primary mt-3">Scan Another Product</a>
+    </div>
+</div>
+
+{% endblock %}
