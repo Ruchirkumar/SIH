@@ -4,5 +4,6 @@ from . import views
 urlpatterns = [
     path('upload/', views.upload_scan, name='upload_scan'),
     path('scan/<int:scan_id>/', views.scan_result, name='scan_result'),
+    path('scan/<int:scan_id>/report/', views.scan_report_pdf, name='scan_report_pdf'),
     path('scans/', views.scan_list, name='scan_list'),
 ]
